@@ -479,7 +479,7 @@ def train_sfs(
     
     # time-lagged autoencoder model
     ckpt = torch.load(ckpt_path)
-    time_lagged = models.TimeLaggedAE(in_channels=channel_num, feature_dim=obs_dim, embed_dim=embedding_dim, data_dim=data_dim, enc_net=enc_net, e1_layer_n=e1_layer_n)
+    time_lagged = models.AMINetwork(in_channels=channel_num, feature_dim=obs_dim, embed_dim=embedding_dim, data_dim=data_dim, enc_net=enc_net, e1_layer_n=e1_layer_n)
     time_lagged.load_state_dict(ckpt['model'])
     time_lagged = time_lagged.to(device)
 
