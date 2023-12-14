@@ -1,0 +1,1 @@
+python ./methods/sindy.py --system 'lorenz'

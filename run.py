@@ -53,7 +53,7 @@ if __name__ == '__main__':
     parser.add_argument('--num_heads', type=int, default=1)
     parser.add_argument('--sync', type=int, default=1)
     parser.add_argument('--rho', type=int, default=1)
-    parser.add_argument('--inter_p', type=str, default='nearest')
+    parser.add_argument('--inter_p', type=str, default='nearest_neighbour')
     parser.add_argument('--koopman_dim', type=int, default=4)
     parser.add_argument('--enc_net', type=str, default='MLP')
     parser.add_argument('--e1_layer_n', type=int, default=3)
@@ -75,14 +75,14 @@ if __name__ == '__main__':
     
     # main pipeline
     if args.model == 'ours':
-        Data_Generate(args, mode='tracjectory')
+        # Data_Generate(args, mode='tracjectory')
 
         # Data_Generate(args, mode='id')
         # ID_Estimate(args)
         
-        # Data_Generate(args, mode='learn')
-        # Learn_Slow_Fast(args, 'train')
-        # Learn_Slow_Fast(args, 'test')
+        Data_Generate(args, mode='learn')
+        Learn_Slow_Fast(args, 'train')
+        Learn_Slow_Fast(args, 'test')
     else:
         Data_Generate(args, mode='learn')
         Baseline(args, 'train')
