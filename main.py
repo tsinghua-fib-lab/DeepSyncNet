@@ -57,6 +57,8 @@ def AutoEmbedSize(args, tau, random_seed=729, is_print=False):
     time.sleep(0.1)
     seed_everything(random_seed)
     set_cpu_num(args.cpu_num)
+    if args.device == 'cuda':
+        choice_gpu(memory_size=args.memory_size)
 
     embed_size_list = []
     nmse_list = []
@@ -201,6 +203,8 @@ def learn_autoEmbedSize(args, n, random_seed=729, is_print=False, mode='train', 
     time.sleep(0.1)
     seed_everything(random_seed)
     set_cpu_num(args.cpu_num)
+    if args.device == 'cuda':
+        choice_gpu(memory_size=args.memory_size)
 
     embed_size = np.mean(np.loadtxt(args.id_log_dir + f'st{args.start_t}_et{args.end_t}/sliding_length-{args.sliding_length}/tau_{round(args.tau_s,4)}/final/embed_size.txt')).astype(int)
     
@@ -291,6 +295,7 @@ def ID_Estimate(args):
             is_print = True if len(workers)==0 else False
             workers.append(Process(target=AutoEmbedSize, args=(args, tau, random_seed, is_print), daemon=True))
             workers[-1].start()
+            time.sleep(10.0)
         else:
             AutoEmbedSize(args, tau, random_seed, True)
                 
@@ -317,6 +322,7 @@ def Learn_Slow_Fast(args, mode='train', only_extract=False):
             is_print = True if len(workers)==0 else False
             workers.append(Process(target=learn_autoEmbedSize, args=(args, n, random_seed, is_print, mode, only_extract), daemon=True))
             workers[-1].start()
+            time.sleep(10.0)
         else:
             learn_autoEmbedSize(args, n, random_seed, True, mode, only_extract)
     # block

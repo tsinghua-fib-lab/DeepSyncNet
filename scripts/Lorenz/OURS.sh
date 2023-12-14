@@ -43,15 +43,14 @@ auto=1
 redundant_dim=$((64-${slow_dim}))
 koopman_dim=$((${slow_dim}+${redundant_dim}))
 device=cpu
-# device=cuda
+memory_size=3000
 cpu_num=1
 data_dir=Data/${system}/data/
 id_log_dir=logs/${system}/${enc_net}/TimeSelection-auto${auto}/
 learn_log_dir=logs/${system}/${enc_net}/${submodel}-new_fast/SFS-slow${slow_dim}-tau_s${tau_s}/fast${fast}-sync${sync}-rho${rho}/${inter_p}/
-gpu=2
 
 
-CUDA_VISIBLE_DEVICES=$gpu python ./run.py \
+python ./run.py \
 --model $model \
 --submodel $submodel \
 --system $system \
@@ -89,6 +88,7 @@ CUDA_VISIBLE_DEVICES=$gpu python ./run.py \
 --auto $auto \
 --koopman_dim $koopman_dim \
 --device $device \
+--memory_size $memory_size \
 --cpu_num $cpu_num \
 --data_dir $data_dir \
 --id_log_dir $id_log_dir \

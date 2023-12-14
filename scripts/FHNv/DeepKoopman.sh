@@ -25,16 +25,17 @@ dt=0.1
 lr=0.001
 batch_size=128
 baseline_epoch=50
-seed_num=3
+seed_num=5
 tau_1=0.0
 tau_s=0.5
 device=cpu
+memory_size=5000
 cpu_num=1
 data_dir=Data/${system}_trace_num${trace_num}_t${total_t}/data/
 baseline_log_dir=logs/${system}/$model/
-gpu=1
 
-CUDA_VISIBLE_DEVICES=$gpu python ./run.py \
+
+python ./run.py \
 --model $model \
 --submodel $submodel \
 --system $system \
@@ -51,6 +52,7 @@ CUDA_VISIBLE_DEVICES=$gpu python ./run.py \
 --train_horizon $train_horizon \
 --test_horizon $test_horizon \
 --learn_n $learn_n \
+--memory_size $memory_size \
 --predict_n $predict_n \
 --tau_unit $tau_unit \
 --tau_1 $tau_1 \

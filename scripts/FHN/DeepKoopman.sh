@@ -30,13 +30,13 @@ stride_t=0.01
 tau_1=0.0
 tau_s=2.0
 device=cpu
+memory_size=5000
 cpu_num=1
 data_dir=Data/${system}_trace_num${trace_num}_t${total_t}/data/
 baseline_log_dir=logs/${system}/$model-tau_s${tau_s}/
-gpu=1
 
 
-CUDA_VISIBLE_DEVICES=$gpu python ./run.py \
+python ./run.py \
 --model $model \
 --submodel $submodel \
 --system_name $system_name \
@@ -57,6 +57,7 @@ CUDA_VISIBLE_DEVICES=$gpu python ./run.py \
 --predict_n $predict_n \
 --tau_unit $tau_unit \
 --stride_t $stride_t \
+--memory_size $memory_size \
 --tau_1 $tau_1 \
 --tau_s $tau_s \
 --slow_dim $slow_dim \

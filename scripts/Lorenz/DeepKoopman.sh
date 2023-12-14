@@ -25,12 +25,13 @@ seed_num=5
 tau_1=0.0
 tau_s=2.0
 device=cpu
+memory_size=3000
 cpu_num=1
 data_dir=Data/${system}/data/
 baseline_log_dir=logs/${system}/$model/
-gpu=1
 
-CUDA_VISIBLE_DEVICES=$gpu python ./run.py \
+
+python ./run.py \
 --model $model \
 --submodel $submodel \
 --system $system \
@@ -44,6 +45,7 @@ CUDA_VISIBLE_DEVICES=$gpu python ./run.py \
 --batch_size $batch_size \
 --baseline_epoch $baseline_epoch \
 --seed_num $seed_num \
+--memory_size $memory_size \
 --train_horizon $train_horizon \
 --test_horizon $test_horizon \
 --learn_n $learn_n \

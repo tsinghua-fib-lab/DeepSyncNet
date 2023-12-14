@@ -68,6 +68,7 @@ if __name__ == '__main__':
     parser.add_argument('--id_log_dir', type=str, default='logs/FHN/TimeSelection/')
     parser.add_argument('--learn_log_dir', type=str, default='logs/FHN/LearnDynamics/')
     parser.add_argument('--baseline_log_dir', type=str, default='logs/FHN/LearnDynamics/')
+    parser.add_argument('--memory_size', type=int, default=3000)
     args = parser.parse_args()
 
     if not args.parallel and args.cpu_num==1:
@@ -84,7 +85,6 @@ if __name__ == '__main__':
         Learn_Slow_Fast(args, 'train')
         Learn_Slow_Fast(args, 'test')
     else:
-        Data_Generate(args, mode='learn')
         Baseline(args, 'train')
         Baseline(args, 'test')
         

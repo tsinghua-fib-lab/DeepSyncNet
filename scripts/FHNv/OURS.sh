@@ -32,10 +32,10 @@ predict_n=500
 # stride_t=0.1
 tau_unit=10.0
 stride_t=1.0
-num_heads=4
+num_heads=2
 tau_s=0.5
-embedding_dim=16
-auto=0
+embedding_dim=64
+auto=1
 slow_dim=3
 fast=1
 mask_slow=0
@@ -43,14 +43,14 @@ rho=1
 inter_p=nearest_neighbour
 redundant_dim=$((64-${slow_dim}))
 koopman_dim=$((${slow_dim}+${redundant_dim}))
-device=cpu
+device=cuda
+memory_size=5000
 cpu_num=1
 data_dir=Data/${system}_trace_num${trace_num}_t${total_t}/data/
 id_log_dir=logs/${system}/${enc_net}/TimeSelection/
 learn_log_dir=logs/${system}/${enc_net}/${submodel}/no-detach-no_adiab-LearnDynamics-slow${slow_dim}-tau_s${tau_s}/fast${fast}-mask_slow${mask_slow}-rho${rho}/${inter_p}/
-gpu=1
 
-CUDA_VISIBLE_DEVICES=$gpu python ./run.py \
+python ./run.py \
 --model $model \
 --system $system \
 --enc_net $enc_net \
@@ -85,6 +85,7 @@ CUDA_VISIBLE_DEVICES=$gpu python ./run.py \
 --inter_p $inter_p \
 --koopman_dim $koopman_dim \
 --device $device \
+--memory_size $memory_size \
 --cpu_num $cpu_num \
 --data_dir $data_dir \
 --id_log_dir $id_log_dir \

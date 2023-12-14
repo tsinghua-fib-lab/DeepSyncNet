@@ -9,10 +9,6 @@ data_dim=4
 obs_dim=2
 slow_dim=1
 system=HalfMoon_2D
-# data_dim=6
-# obs_dim=3
-# slow_dim=2
-# system=HalfMoon_3D
 trace_num=50
 total_t=31400.0
 start_t=0.0
@@ -23,7 +19,7 @@ lr=0.001
 batch_size=128
 id_epoch=20
 learn_epoch=25
-seed_num=3
+seed_num=5
 sliding_length=20000.0
 train_horizon=20000.0
 test_horizon=10000.0
@@ -36,18 +32,18 @@ num_heads=1
 tau_s=20.0
 embedding_dim=64
 bi_info=1
-auto=0
+auto=1
 redundant_dim=$((64-${slow_dim}))
 koopman_dim=$((${slow_dim}+${redundant_dim}))
 device=cpu
-# device=cuda
+memory_size=3000
 cpu_num=1
 data_dir=Data/${system}_trace_num${trace_num}/data/
 id_log_dir=logs/${system}/${enc_net}/TimeSelection/auto_${auto}/
 learn_log_dir=logs/${system}/${enc_net}/${submodel}/no-detach-no_adiab-LearnDynamics-slow${slow_dim}-tau_s${tau_s}/
-gpu=5
 
-CUDA_VISIBLE_DEVICES=$gpu python ./run.py \
+
+python ./run.py \
 --model $model \
 --submodel $submodel \
 --system $system \
@@ -80,6 +76,7 @@ CUDA_VISIBLE_DEVICES=$gpu python ./run.py \
 --slow_dim $slow_dim \
 --koopman_dim $koopman_dim \
 --device $device \
+--memory_size $memory_size \
 --cpu_num $cpu_num \
 --data_dir $data_dir \
 --id_log_dir $id_log_dir \
