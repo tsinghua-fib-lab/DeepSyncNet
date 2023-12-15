@@ -52,13 +52,14 @@ def Data_Generate(args, mode='tracjectory'):
                                         stride_t=args.stride_t, only_test=True, horizon=args.test_horizon)
 
 
-def AutoEmbedSize(args, tau, random_seed=729, is_print=False):
+def AutoEmbedSize(args, tau, random_seed=729, is_print=False, gpu_id=0):
 
     time.sleep(0.1)
     seed_everything(random_seed)
     set_cpu_num(args.cpu_num)
+    
     if args.device == 'cuda':
-        choice_gpu(memory_size=args.memory_size)
+        torch.cuda.set_device(gpu_id)
 
     embed_size_list = []
     nmse_list = []
@@ -198,13 +199,14 @@ def AutoEmbedSize(args, tau, random_seed=729, is_print=False):
              nmse_list=nmse_list, allow_pickle=True)
 
 
-def learn_autoEmbedSize(args, n, random_seed=729, is_print=False, mode='train', only_extract=False):
+def learn_autoEmbedSize(args, n, random_seed=729, is_print=False, mode='train', only_extract=False, gpu_id=0):
     
     time.sleep(0.1)
     seed_everything(random_seed)
     set_cpu_num(args.cpu_num)
+    
     if args.device == 'cuda':
-        choice_gpu(memory_size=args.memory_size)
+        torch.cuda.set_device(gpu_id)
 
     embed_size = np.mean(np.loadtxt(args.id_log_dir + f'st{args.start_t}_et{args.end_t}/sliding_length-{args.sliding_length}/tau_{round(args.tau_s,4)}/final/embed_size.txt')).astype(int)
     
@@ -237,11 +239,14 @@ def learn_autoEmbedSize(args, n, random_seed=729, is_print=False, mode='train', 
         raise TypeError(f"Wrong mode of {mode}!")
 
 
-def baseline_subworker(args, is_print=False, random_seed=729, mode='train'):
+def baseline_subworker(args, is_print=False, random_seed=729, mode='train', gpu_id=0):
 
     time.sleep(0.1)
     seed_everything(random_seed)
     set_cpu_num(1)
+    
+    if args.device == 'cuda':
+        torch.cuda.set_device(gpu_id)
 
     if 'neural_ode' in args.model:
         model = models.NeuralODE(in_channels=args.channel_num, feature_dim=args.obs_dim, data_dim=args.data_dim, submodel=args.submodel)
@@ -288,14 +293,17 @@ def ID_Estimate(args):
     # id estimate process
     T = args.tau_list
     workers = []
+    gpu_controller, gpu_id = AutoGPU(args.memory_size), 0
     for tau in T:
         tau = round(tau, 4)
         random_seed = 1
         if args.parallel: # multi-process to speed-up
             is_print = True if len(workers)==0 else False
-            workers.append(Process(target=AutoEmbedSize, args=(args, tau, random_seed, is_print), daemon=True))
+            if args.device == 'cuda':
+                gpu_id = gpu_controller.choice_gpu()
+            workers.append(Process(target=AutoEmbedSize, args=(args, tau, random_seed, is_print, gpu_id), daemon=True))
             workers[-1].start()
-            time.sleep(10.0)
+            time.sleep(0.1)
         else:
             AutoEmbedSize(args, tau, random_seed, True)
                 
@@ -317,12 +325,15 @@ def Learn_Slow_Fast(args, mode='train', only_extract=False):
     # slow evolve sub-process
     n = args.learn_n
     workers = []
+    gpu_controller, gpu_id = AutoGPU(args.memory_size), 0
     for random_seed in range(1, args.seed_num+1):
         if args.parallel:
             is_print = True if len(workers)==0 else False
-            workers.append(Process(target=learn_autoEmbedSize, args=(args, n, random_seed, is_print, mode, only_extract), daemon=True))
+            if args.device == 'cuda':
+                gpu_id = gpu_controller.choice_gpu()
+            workers.append(Process(target=learn_autoEmbedSize, args=(args, n, random_seed, is_print, mode, only_extract, gpu_id), daemon=True))
             workers[-1].start()
-            time.sleep(10.0)
+            time.sleep(0.1)
         else:
             learn_autoEmbedSize(args, n, random_seed, True, mode, only_extract)
     # block
@@ -338,10 +349,13 @@ def Baseline(args, mode='train'):
     print(f'Running the {args.model.upper()}')
 
     workers = []
+    gpu_controller, gpu_id = AutoGPU(args.memory_size), 0
     for random_seed in range(1, args.seed_num+1):
         if args.parallel:
             is_print = True if len(workers)==0 else False
-            workers.append(Process(target=baseline_subworker, args=(args, is_print, random_seed, mode), daemon=True))
+            if args.device == 'cuda':
+                gpu_id = gpu_controller.choice_gpu()
+            workers.append(Process(target=baseline_subworker, args=(args, is_print, random_seed, mode, gpu_id), daemon=True))
             workers[-1].start()
         else:
             baseline_subworker(args, True, random_seed, mode)

@@ -116,7 +116,7 @@ def baseline_train(
             if is_print:
                 train_loader.set_description(f'Tau[{tau_s}] | epoch[{epoch}/{max_epoch}] | train-mse={loss:.5f}')
         
-        if epoch % 25 == 0:
+        if epoch % 10 == 0 or epoch in [1, max_epoch]:
             
             # validate
             with torch.no_grad():

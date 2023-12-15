@@ -26,24 +26,32 @@ def seed_everything(seed):
     torch.backends.cudnn.deterministic = True
     torch.backends.cudnn.benchmark = False
     
-    
-def choice_gpu(memory_size):
-    # 使用nvidia-smi命令获取GPU信息
-    cmd = "nvidia-smi --query-gpu=memory.free --format=csv,noheader,nounits"
-    output = subprocess.check_output(cmd, shell=True).decode().strip().split("\n")
 
-    # 遍历每个GPU的剩余显存
-    flag = False
-    for i, free_memory_str in enumerate(output):
-        free_memory = int(free_memory_str)
-
-        # 检查剩余显存是否足够
-        if free_memory >= memory_size:
-            # 设置当前进程使用的GPU
-            torch.cuda.set_device(i)
-            flag = True
-            print(f"SubProcess[{os.getpid()}]: GPU-{i}")
-            break
+class AutoGPU():
     
-    if not flag:
-        raise Exception(f"SubProcess[{os.getpid()}]: No GPU can use!")
+    def __init__(self, memory_size):
+        
+        self.memory_size = memory_size
+        
+        cmd = "nvidia-smi --query-gpu=memory.free --format=csv,noheader,nounits"
+        output = subprocess.check_output(cmd, shell=True).decode().strip().split("\n")
+
+        self.free_memory = []
+        for i, free_memory_str in enumerate(output):
+            self.free_memory.append(int(free_memory_str))
+     
+    def choice_gpu(self):
+
+        flag = False
+        for i, free_memory in enumerate(self.free_memory):
+
+            if free_memory >= self.memory_size:
+                
+                flag = True
+                self.free_memory[i] -= self.memory_size
+                print(f"GPU-{i}: {free_memory}MB -> {self.free_memory[i]}MB")
+                
+                return i
+        
+        if not flag:
+            raise Exception(f"SubProcess[{os.getpid()}]: No GPU can use!")

@@ -638,7 +638,7 @@ def train_sfs(
             elif is_print and only_extract:
                 train_loader.set_description(f'Tau[{tau_s}] | Epoch[{epoch}/{learn_max_epoch}] | Train | Extract: embed={embed_reconstruct_loss:.4f}, obs={obs_reconstruct_loss:.4f}, t={(t2-t1):.2f}s | BP: t={(t4-t2):.2f}s')
 
-        if epoch % 25 == 0:
+        if epoch % 10 == 0 or epoch in [1, learn_max_epoch]:
 
             # validate 
             with torch.no_grad():
@@ -1041,7 +1041,7 @@ def train_sfs(
                         ax1 = plt.subplot(111)
                         ax1.set_xlabel(r'$i$')
                         ax1.set_ylabel(r'$t$')
-                        im1 = ax1.imshow(np.abs((total_obses_next-targets)).cpu().numpy()[::-1,0,0,:], aspect='auto', vmin=0, vmax=3, cmap=my_cmap, extent=[0, targets.shape[-1], start_t+predict_length, end+predict_length])
+                        im1 = ax1.imshow(np.abs((total_obses_next-targets).cpu().numpy())[::-1,0,0,:], aspect='auto', vmin=0, vmax=3, cmap=my_cmap, extent=[0, targets.shape[-1], start_t+predict_length, end+predict_length])
                         plt.colorbar(im1, ax=ax1)
                         plt.tight_layout(); plt.savefig(log_dir+f"/val/epoch-{epoch}/pred_error.pdf", dpi=300)
                         plt.close()
@@ -1126,7 +1126,7 @@ def train_sfs(
                         plt.close()
                 
         # save model
-        if epoch==learn_max_epoch:
+        if epoch == learn_max_epoch:
             torch.save(model.state_dict(), log_dir+f"/checkpoints/epoch-{epoch}.ckpt")
         
     # plot loss curve
