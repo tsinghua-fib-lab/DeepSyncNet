@@ -1,6 +1,6 @@
 # DeepSyncNet
 
-A python  implementation of our manuscript "Deep synergetic modeling of slow-fast dynamics in complex systems”. Thank you for reviewing our manuscript submitted to Nature Computational Science.
+A python  implementation of our manuscript "Deep synergetic modeling of slow-fast dynamics in complex systems”. Thank you for reviewing our manuscript.
 
 ## Environment Setup
 ```bash
