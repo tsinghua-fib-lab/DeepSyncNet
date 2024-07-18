@@ -12,7 +12,22 @@ This repository contains the source code for generating simulated data and repro
 - Create an experimental environment with request packages:
 
 ```bash
-conda create --name <env> --file requirement.txt
+conda create --name <env> --file requirements.txt
+```
+
+**Main Requirements:** (see requirement.txt for details)
+
+```shell
+# platform: linux-64 (Ubuntu 11.4.0)
+
+numpy==1.22.4
+python==3.10.12
+scikit-dimension==0.3.3
+scikit-learn==1.3.0
+scipy==1.11.2
+sdeint==0.3.0
+torch==2.0.1+cu118
+torchdiffeq==0.2.3
 ```
 
 ## Demo
