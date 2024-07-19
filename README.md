@@ -9,7 +9,7 @@ This repository contains the source code for generating simulated data and repro
 ## Installation Guide
 
 - Install Anaconda https://docs.anaconda.com/anaconda/install/index.html
-- Create an experimental environment with request packages:
+- Create an experimental environment with request packages: (this will take about 0.5 hours)
 
 ```bash
 conda create --name <env> --file requirements.txt
@@ -48,7 +48,7 @@ choose the {system}: `FHN`, `FHNv`, `HalfMoon`, `Lorenz`
 ./scripts/{system}/RC.sh
 ```
 
-We recommend turning on the **--parallel** option to enable parallel execution of programs with different random seeds to improve test efficiency. Please be careful to choose the suitable number of random seeds  **--seed_num** according to your computational and cache resources. The result of the experiment should be an average of multiple random seeds.
+We recommend turning on the **--parallel** option to enable parallel execution of programs with different random seeds to improve test efficiency. Please be careful to choose the suitable number of random seeds  **--seed_num** according to your computational and cache resources. The result of the experiment should be an average of multiple random seeds. The entire training and testing will take a few minutes to a few hours (depending on your computing resources).
 
 **We have encapsulated all the tedious operations. When you run any experimental script, the main program `run.py` will automatically execute the following steps in sequence:**
 
