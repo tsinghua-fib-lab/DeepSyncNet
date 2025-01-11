@@ -381,7 +381,7 @@ def test_ami(
                 else:
                     k_list = np.arange(3, 7+1, 1).astype(int)
             elif 'HalfMoon' in system:
-                k_list = np.arange(15, 30+1, 1).astype(int)
+                k_list = np.arange(15, 50+1, 1).astype(int)
             elif 'Coupled_Lorenz' in system:
                 k_list = np.arange(3, 10+1, 1).astype(int)
             

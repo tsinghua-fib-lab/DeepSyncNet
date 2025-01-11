@@ -1,5 +1,5 @@
 #--------------------------------Coupled_Lorenz-------------------------------- 
-slow_dim=3
+slow_dim=2
 submodel=MLP
 model=neural_ode-${submodel}
 channel_num=3

@@ -1,7 +1,7 @@
 #--------------------------------HalfMoon 2D--------------------------------
 model=ours
 submodel=neural_ode
-enc_net=GRU
+enc_net=MLP
 e1_layer_n=3
 channel_num=1
 xdim=1
@@ -29,7 +29,7 @@ tau_unit=1.0
 # stride_t=1.0
 stride_t=100.0
 num_heads=1
-tau_s=20.0
+tau_s=30.0
 embedding_dim=64
 bi_info=1
 auto=1
@@ -68,7 +68,7 @@ python ./run.py \
 --predict_n $predict_n \
 --stride_t $stride_t \
 --num_heads $num_heads \
---tau_list 1.0 2.0 3.0 4.0 5.0 6.0 7.0 8.0 9.0 10.0 20.0 30.0 40.0 50.0 \
+--tau_list 1.0 3.0 5.0 7.0 9.0 10.0 20.0 30.0 40.0 50.0 75.0 100.0 \
 --tau_s $tau_s \
 --embedding_dim $embedding_dim \
 --bi_info $bi_info \
