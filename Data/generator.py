@@ -15,6 +15,7 @@ def generate_original_data(trace_num, total_t=6280, dt=0.001, save=True, plot=Fa
 
         if 'FHN' in data_dir:
             
+            
             if 'FHNv' in data_dir:
                 # initial condition
                 u0, v0 = np.loadtxt(f'Data/IC/y0{trace_id-1}u.txt').tolist(), np.loadtxt(f'Data/IC/y0{trace_id-1}v.txt').tolist()

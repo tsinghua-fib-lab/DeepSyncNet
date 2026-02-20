@@ -7,6 +7,7 @@ class DeepKoopman(nn.Module):
     def __init__(self, in_channels, feature_dim, data_dim, kdim=8, submodel='MLP'):
         super(DeepKoopman, self).__init__()
         
+        
         if submodel == 'MLP':
             self.encoder = nn.Sequential(
                 nn.Flatten(1),

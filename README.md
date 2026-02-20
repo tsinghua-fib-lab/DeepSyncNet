@@ -11,6 +11,7 @@ This repository contains the source code for generating simulated data and repro
 - Install Anaconda https://docs.anaconda.com/anaconda/install/index.html
 - Create an experimental environment with request packages: (this will take about 0.5 hours)
 
+
 ```bash
 conda create --name <env> --file requirements.txt
 ```

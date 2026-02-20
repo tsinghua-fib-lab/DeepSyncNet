@@ -13,6 +13,7 @@ signal.signal(signal.SIGINT, term_sig_handler)
 
 if __name__ == '__main__':
 
+
     parser = argparse.ArgumentParser()
     parser.add_argument('--model', type=str, default='ours')
     parser.add_argument('--submodel', type=str, default='neural_ode')

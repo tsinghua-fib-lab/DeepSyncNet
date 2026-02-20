@@ -20,6 +20,7 @@ class ID_Estimator:
         else:
             k_list = np.array(k_list)
 
+
         dims = []
         for k in k_list:
             assert k>0, "k must be larger than 0"

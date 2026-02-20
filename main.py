@@ -14,6 +14,7 @@ from Data.generator import *
 
 def Data_Generate(args, mode='tracjectory'):
     
+    
     if mode=='tracjectory':
         # generate original data
         print('Generating original simulation data')
